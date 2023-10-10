@@ -1,9 +1,10 @@
 import './App.css';
 import React, { useState } from 'react';
 import Navbar from './Navbar';
-import Login from './Login';
+import Authentication from './Authentication';
 import ExpenseTracker from './ExpenseTracker'; 
 import BudgetSetting from './BudgetSetting'; 
+import UserProfile from './UserProfile';
 
 /**
  * Main component for the application.
@@ -19,7 +20,11 @@ const App = () => {
   const handleLogin = () => {
     // Perform authentication logic here (e.g., API call)
     // When login is successful, update the user state
-    setUser({ username: 'exampleUser' }); // Replace with actual user data
+    setUser({ 
+      username: 'exampleUser' ,
+      name: 'Ola Norman',
+      email: 'user@example.com',
+      profilePicture: ''}); // Replace with actual user data
   };
 
   const handleLogout = () => {
@@ -32,15 +37,17 @@ const App = () => {
   return (
     <div className="app">
       <Navbar user={user} onLogout={handleLogout} />
-      
-      {user ? (
-        <>
-          <ExpenseTracker />
-          <BudgetSetting />
-        </>
-      ) : (
-        <Login onLogin={handleLogin} />
-      )}
+      <div className="content">
+        {user ? (
+          <>
+            <UserProfile user={user} />
+            <ExpenseTracker />
+            <BudgetSetting />
+          </>
+          ) : (
+            <Authentication onLogin={handleLogin} />
+          )}
+      </div>
     </div>
   );
 };
