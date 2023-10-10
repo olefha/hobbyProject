@@ -1,10 +1,12 @@
 import './App.css';
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Navbar from './Navbar';
 import Authentication from './Authentication';
 import ExpenseTracker from './ExpenseTracker'; 
 import BudgetSetting from './BudgetSetting'; 
 import UserProfile from './UserProfile';
+import Settings from './Settings';
 
 /**
  * Main component for the application.
@@ -35,20 +37,18 @@ const App = () => {
 
   // Render the main structure of the application
   return (
-    <div className="app">
-      <Navbar user={user} onLogout={handleLogout} />
-      <div className="content">
-        {user ? (
-          <>
-            <UserProfile user={user} />
-            <ExpenseTracker />
-            <BudgetSetting />
-          </>
-          ) : (
-            <Authentication onLogin={handleLogin} />
-          )}
+    <Router>
+      <div className="app">
+        <Navbar user={user} onLogout={handleLogout} />
+        <div className="content">
+          <Routes>
+            <Route path="/" element={user ? <ExpenseTracker /> : <Authentication onLogin={handleLogin} />} />
+            <Route path="/profile" element={user ? <UserProfile user={user} /> : <Authentication onLogin={handleLogin} />} />
+            <Route path="/settings" element={user ? <Settings /> : <Authentication onLogin={handleLogin} />} />
+          </Routes>
+        </div>
       </div>
-    </div>
+    </Router>
   );
 };
 
